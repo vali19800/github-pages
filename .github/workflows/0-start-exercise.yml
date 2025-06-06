@@ -1,103 +1,125 @@
-name: Step 0 # Start Exercise
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEDE ELECTRÓNICA - Documento</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+    }
+    header {
+      background-color: #b03a85;
+      color: white;
+      padding: 10px 15px;
+      font-weight: bold;
+    }
+    .menu {
+      background-color: #eeeeee;
+      padding: 10px 15px;
+      border-bottom: 1px solid #ccc;
+    }
+    .content {
+      max-width: 500px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .info-field {
+      margin: 5px 0;
+    }
+    .label {
+      font-weight: bold;
+      color: #555;
+    }
+    .value {
+      color: #222;
+    }
+    .btn {
+      display: inline-block;
+      margin: 15px 10px 0 0;
+      padding: 10px 15px;
+      background-color: #b03a85;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #fafafa;
+      font-size: 0.9em;
+      color: #333;
+      padding: 20px 15px;
+      margin-top: 40px;
+    }
+    footer ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    footer li {
+      margin: 5px 0;
+    }
+    footer a {
+      color: #555;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>Identifícate</header>
+  <div class="menu">
+    <strong>SEDE ELECTRÓNICA</strong> | Menú
+  </div>
 
-on:
-  push:
-    branches:
-      - main
+  <div class="content">
+    <div class="section-title">Información del documento</div>
+    <div class="info-field"><span class="label">Documento:</span> <span class="value">KHOUAN TADJ EDDINE BACHIR</span></div>
+    <div class="info-field"><span class="label">Código CSV:</span> <span class="value">APB6KLCW98FHH45KL9KES8AES</span></div>
+    <div class="info-field"><span class="label">Fecha de creación:</span> <span class="value">08-abr-2025 14:05:28</span></div>
+    <div class="info-field"><span class="label">Tipo de documento:</span> <span class="value">Documento electrónico</span></div>
+    <div class="info-field"><span class="label">Formato:</span> <span class="value">PDF</span></div>
+    <div class="info-field">
+      <span class="label">Verificación de integridad:</span><br>
+      <span class="value">98afb1a4e964d5698afb1a4e964d5698afb1a4e9934dd7e9c4100da94d64d56aee1120225e698afb1a4e964d5698afb1a4eaa3dafa752bf9b58026ec200934dd7e9c4100da94d</span>
+    </div>
 
-permissions:
-  contents: write
-  actions: write
-  issues: write
+    <a href="#" class="btn">Descargar una copia</a>
+    <a href="#" class="btn">Validar otro documento</a>
+  </div>
 
-env:
-  STEP_1_FILE: ".github/steps/1-step.md"
-
-jobs:
-  start_exercise:
-    if: |
-      !github.event.repository.is_template
-    name: Start Exercise
-    uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@v0.4.0
-    with:
-      exercise-title: "GitHub Pages"
-      intro-message: "Create a site or blog from your GitHub repositories with GitHub Pages."
-
-  create_initial_files:
-    name: Create initial files
-    runs-on: ubuntu-latest
-    needs: [start_exercise]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Create empty _config.yml file
-        run: |
-          touch _config.yml
-
-      - name: Create index.md file
-        run: |
-          cat > index.md << EOF
-          ---
-          title: Welcome to my blog!
-          ---
-          EOF
-      - name: Commit files
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: |
-            - _config.yml
-            - index.md
-          message: 'Create config and homepages files'
-          default_author: github_actions
-
-  post_next_step_content:
-    name: Post next step content
-    runs-on: ubuntu-latest
-    needs: [start_exercise]
-    env:
-      ISSUE_URL: ${{ needs.start_exercise.outputs.issue-url }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Get response templates
-        uses: actions/checkout@v4
-        with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
-          ref: v0.4.0
-
-      - name: Build comment - add step content
-        id: build-comment
-        uses: skills/action-text-variables@v2
-        with:
-          template-file: ${{ env.STEP_1_FILE }}
-          template-vars: |
-            login: ${{ github.actor }}
-            full_repo_name: ${{ github.repository }}
-
-      - name: Create comment - add step content
-        run: |
-          gh issue comment "$ISSUE_URL" \
-            --body "$ISSUE_BODY"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_BODY: ${{ steps.build-comment.outputs.updated-text }}
-
-      - name: Create comment - watching for progress
-        run: |
-          gh issue comment "$ISSUE_URL" \
-            --body-file "exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable next step workflow
-        run: |
-          gh workflow enable "Step 1"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  <footer>
+    <div class="section-title">Acerca de esta página</div>
+    <ul>
+      <li><a href="#">La sede</a></li>
+      <li><a href="#">Titularidad y Directorio de Oficinas</a></li>
+      <li><a href="#">Normativa</a></li>
+      <li><a href="#">Calendario y cómputo de plazos</a></li>
+      <li><a href="#">Fecha y hora oficial</a></li>
+      <li><a href="#">Información de interés</a></li>
+      <li><a href="#">Política de Privacidad</a></li>
+      <li><a href="#">Esquema Nacional de Seguridad</a></li>
+      <li><a href="#">Política de Cookies</a></li>
+      <li><a href="#">Canal de Denuncias</a></li>
+      <li><a href="#">Certificados</a></li>
+      <li><a href="#">Sistemas de identificación</a></li>
+      <li><a href="#">Sistemas de Firma</a></li>
+      <li><a href="#">Certificados Electrónicos</a></li>
+      <li><a href="#">Usabilidad</a></li>
+      <li><a href="#">Accesibilidad</a></li>
+      <li><a href="#">Mapa web</a></li>
+      <li><a href="#">Ayuda</a></li>
+      <li><a href="#">Preguntas frecuentes</a></li>
+      <li>¿Tienes algún problema? Escríbenos o llama al 949260494</li>
+    </ul>
+  </footer>
+</body>
+</html>
